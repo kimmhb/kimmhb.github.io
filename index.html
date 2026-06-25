@@ -467,11 +467,30 @@
         let pendingTarget = null;
 
         window.onload = function() {
+            // 💡 1. localStorage에서 저장된 테마 불러오기 (없으면 'default')
+            const savedTheme = localStorage.getItem('theme') || 'default';
+            setTheme(savedTheme);
+
+            // 💡 2. localStorage에서 로그인한 유저 정보 불러오기
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                isLoggedIn = true;
+                
+                // 네비게이션 버튼 상태를 '로그아웃'으로 변경
+                const btn = document.getElementById('loginNavBtn');
+                btn.innerText = "로그아웃";
+                btn.onclick = performLogout;
+            }
+
+            // 3. 공지사항 렌더링
             renderNotices();
         };
 
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
+            // 💡 테마를 변경할 때마다 localStorage에 저장
+            localStorage.setItem('theme', theme);
         }
 
         function navigate(targetId, requiresAuth = false) {
@@ -505,6 +524,10 @@
             if (user) {
                 isLoggedIn = true;
                 currentUser = user; 
+                
+                // 💡 로그인 성공 시 localStorage에 유저 정보 저장 (문자열로 변환)
+                localStorage.setItem('currentUser', JSON.stringify(user));
+
                 alert(`👋 ${user.name}님, 응원합니다!`);
                 
                 const btn = document.getElementById('loginNavBtn');
@@ -524,6 +547,9 @@
         function performLogout() {
             isLoggedIn = false;
             currentUser = null; 
+            
+            // 💡 로그아웃 시 localStorage에서 유저 정보 삭제
+            localStorage.removeItem('currentUser');
             
             const btn = document.getElementById('loginNavBtn');
             btn.innerText = "로그인";
@@ -578,12 +604,14 @@
 
             document.getElementById('publicNoticeList').innerHTML = html;
         }
+
         // extracting video id from the URL
         function getYouTubeVideoId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
             const match = url.match(regExp);
             return (match && match[2].length === 11) ? match[2] : null;
         }
+
         function renderDynamicCourses(type) {
             const container = document.getElementById(type + 'ContentContainer');
             container.innerHTML = ''; 
@@ -592,7 +620,7 @@
 
             Object.keys(courseData).forEach(code => {
                 // 현재 접속한 학생의 코드에 맞는 자료만 보여줍니다.
-                if (currentUser.code === code) {
+                if (currentUser && currentUser.code === code) {
                     const board = courseData[code];
                     let items = [];
 
@@ -615,44 +643,43 @@
                         html += `<div class="board-badge">${board.boardName} 전용 게시판</div>`;
                         
                         items.forEach(item => {
-    let mediaHTML = '';
-    let actionHTML = '';
-    
-    if (type === 'videos') {
-        const ytId = getYouTubeVideoId(item.link);
-        
-        if (ytId) {
-            // 유튜브 링크인 경우: 반응형 16:9 Iframe 삽입
-            mediaHTML = `
-                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); margin-bottom: 20px; background: #000;">
-                    <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
-                            src="https://www.youtube.com/embed/${ytId}" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>`;
-            // Iframe이 있으므로 버튼은 생략하거나 부가적인 기능으로 뺄 수 있습니다. (현재는 생략)
-        } else {
-            // 올바른 유튜브 링크가 아닐 경우 기존 아이콘 유지
-            mediaHTML = `<div style="width: 100%; height: 150px; background: var(--bg); border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">📺</div>`;
-            actionHTML = `<button class="btn btn-outline" style="width: 100%; padding: 12px; margin-top: 10px;" onclick="window.open('${item.link}', '_blank')">유튜브 영상 보기 ▶</button>`;
-        }
-    } else {
-        // 학습 자료(materials)일 경우
-        mediaHTML = `<div style="width: 100%; height: 80px; background: var(--bg); border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">📁</div>`;
-        actionHTML = `<a href="${item.fileName}" download class="btn btn-outline" style="display: block; text-align: center; text-decoration: none; width: 100%; box-sizing: border-box; padding: 12px; margin-top: 10px;">PDF 파일 다운로드 ⬇</a>`;
-    }
+                            let mediaHTML = '';
+                            let actionHTML = '';
+                            
+                            if (type === 'videos') {
+                                const ytId = getYouTubeVideoId(item.link);
+                                
+                                if (ytId) {
+                                    // 유튜브 링크인 경우: 반응형 16:9 Iframe 삽입
+                                    mediaHTML = `
+                                        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); margin-bottom: 20px; background: #000;">
+                                            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                                                    src="https://www.youtube.com/embed/${ytId}" 
+                                                    frameborder="0" 
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                    allowfullscreen>
+                                            </iframe>
+                                        </div>`;
+                                } else {
+                                    // 올바른 유튜브 링크가 아닐 경우 기존 아이콘 유지
+                                    mediaHTML = `<div style="width: 100%; height: 150px; background: var(--bg); border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">📺</div>`;
+                                    actionHTML = `<button class="btn btn-outline" style="width: 100%; padding: 12px; margin-top: 10px;" onclick="window.open('${item.link}', '_blank')">유튜브 영상 보기 ▶</button>`;
+                                }
+                            } else {
+                                // 학습 자료(materials)일 경우
+                                mediaHTML = `<div style="width: 100%; height: 80px; background: var(--bg); border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">📁</div>`;
+                                actionHTML = `<a href="${item.fileName}" download class="btn btn-outline" style="display: block; text-align: center; text-decoration: none; width: 100%; box-sizing: border-box; padding: 12px; margin-top: 10px;">PDF 파일 다운로드 ⬇</a>`;
+                            }
 
-    html += `
-        <div class="content-card" style="margin-top: 10px;">
-            ${mediaHTML}
-            <h3>${item.title}</h3>
-            <p>${item.desc}</p>
-            ${actionHTML}
-        </div>
-    `;
-});
+                            html += `
+                                <div class="content-card" style="margin-top: 10px;">
+                                    ${mediaHTML}
+                                    <h3>${item.title}</h3>
+                                    <p>${item.desc}</p>
+                                    ${actionHTML}
+                                </div>
+                            `;
+                        });
                         html += `</div>`;
                     }
                 }
