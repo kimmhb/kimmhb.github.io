@@ -318,7 +318,7 @@
 
     <header>
         <div class="header-left">
-            <div class="logo" onclick="navigate('home')" title="메인으로 가기">STUDY ROOM</div>
+            <div class="logo" onclick="navigate('home')" title="메인으로 가기">김현보 수학</div>
             <div class="theme-switcher">
                 <button onclick="setTheme('default')" title="모던 테마">✨</button>
                 <button onclick="setTheme('dark')" title="다크 모드">🌙</button>
@@ -406,51 +406,51 @@
 
         // 2. 사전에 가입된 회원 명부 
         let members = [
-            { id: 'student01', pw: '1234', name: '김학생', code: 'CODE2024' },
-            { id: 'math-king', pw: '1234', name: '박수학', code: 'VIP777' }
+            { id: 'student01', pw: '1234', name: '일학년', code: 'class101' },
+            { id: 'student02', pw: '1234', name: '이학년', code: 'class102' }
         ];
 
         // 3. 공지사항 데이터
         let notices = [
             { 
-                title: "환영합니다! 스터디 룸이 새롭게 개편되었습니다. 🎉", 
-                content: "앞으로 이곳에서 다양한 수업 영상과 학습 자료를 확인하실 수 있습니다.<br> 궁금한 점이 있으시면 언제든 질문 남겨주세요. 열공하세요!",
-                date: "2024-05-01"
+                title: "notices test2 : LIFO implementation 🎉", 
+                content: "appears after clicking the button",
+                date: "2026-05-01"
             },
             { 
-                title: "중간고사 대비 특강 일정 안내 📅", 
-                content: "다음 주 월요일부터 중간고사 대비 핵심 요약 특강이 시작됩니다.<br> 상세한 커리큘럼은 학습 자료실을 참고해 주세요.",
-                date: "2024-05-10"
+                title: "notices test with some icons 📅", 
+                content: "notices = [ {}, {}, ... ].",
+                date: "2026-06-10"
             }
         ];
 
         // 4. 게시판별 기본 세팅 (학습 자료 배열은 비워두면 자동 연동됩니다)
         const courseData = {
-            'CODE2024': {
+            'class101': {
                 boardName: '공통수학2 심화',
                 videos: [
-                    { title: '🔥 [공통수학2] 원의 방정식 고난도 킬러 문항 정복', link: 'https://youtube.com', desc: '내신 만점을 가르는 원의 방정식 심화 변별력 문제 풀이 스킬을 다룹니다.' }
+                    { title: '[TEST] ; courseData with some links ', link: 'https://www.youtube.com/watch?v=MYGj54xrdoY', desc: '내신 만점을 가르는 원의 방정식 심화 변별력 문제 풀이 스킬을 다룹니다.' }
                 ]
             },
-            'MATH100': {
+            'class102': {
                 boardName: '대수 심화',
                 videos: [
                     { title: '📺 [대수] 지수/로그함수 고난도 그래프 추론', link: 'https://youtube.com', desc: '복잡한 그래프 개형을 파악하고 교점의 개수를 추론하는 심화 특강입니다.' }
                 ]
             },
-            'VIP777': {
+            'class201': {
                 boardName: '미적분 I 심화',
                 videos: [
                     { title: '📈 [미적분 I] 도함수의 활용과 극대/극소', link: 'https://youtube.com', desc: '다항함수의 그래프 개형을 완벽히 마스터하는 심화 개념 강의입니다.' }
                 ]
             },
-            'GUEST01': {
+            'class202': {
                 boardName: '미적분 II 기본',
                 videos: [
                     { title: '🌱 [미적분 II] 초월함수의 미분법 기초', link: 'https://youtube.com', desc: '삼각함수, 지수/로그함수의 미분 공식을 증명하고 기본 예제를 풀어봅니다.' }
                 ]
             },
-            'STUDY55': {
+            'class203': {
                 boardName: '확률과 통계',
                 videos: [
                     { title: '🎲 [확통] 조건부 확률과 독립시행', link: 'https://youtube.com', desc: '헷갈리기 쉬운 조건부 확률의 개념을 명확하게 정리하는 특강입니다.' }
@@ -505,7 +505,7 @@
             if (user) {
                 isLoggedIn = true;
                 currentUser = user; 
-                alert(`👋 ${user.name}님, 환영합니다!`);
+                alert(`👋 ${user.name}님, 응원합니다!`);
                 
                 const btn = document.getElementById('loginNavBtn');
                 btn.innerText = "로그아웃";
