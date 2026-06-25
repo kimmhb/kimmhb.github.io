@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다중 테마 학습 플랫폼</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
+    <style>
+        /* 기본 테마 (모던) */
+        :root {
+            --bg: #F8FAFC;
+            --surface: #FFFFFF;
+            --primary: #6366F1;
+            --primary-hover: #4F46E5;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-color: rgba(0, 0, 0, 0.05);
+            --border-width: 1px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            --btn-shadow: 0 8px 16px rgba(99, 102, 241, 0.2);
+            --radius: 24px;
+            --btn-radius: 16px;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+        }
+
+        /* 다크 모드 테마 */
+        [data-theme="dark"] {
+            --bg: #0F172A;
+            --surface: #1E293B;
+            --primary: #38BDF8; 
+            --primary-hover: #0284C7;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-width: 1px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            --btn-shadow: 0 8px 16px rgba(56, 189, 248, 0.2);
+            --radius: 24px;
+            --btn-radius: 16px;
+            --glass-bg: rgba(15, 23, 42, 0.8);
+        }
+
+        /* 네오 브루탈리즘 테마 */
+        [data-theme="brutal"] {
+            --bg: #FFFDF0; 
+            --surface: #FFFFFF;
+            --primary: #FF3366; 
+            --primary-hover: #E60039;
+            --text-main: #000000;
+            --text-muted: #333333;
+            --border-color: #000000;
+            --border-width: 3px;
+            --shadow: 6px 6px 0px #000000; 
+            --btn-shadow: 4px 4px 0px #000000;
+            --radius: 0px; 
+            --btn-radius: 0px;
+            --glass-bg: #FFFDF0; 
+        }
+
+        body {
+            font-family: 'Pretendard Variable', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: var(--border-width) solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 5%;
+            transition: all 0.3s ease;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .theme-switcher {
+            display: flex;
+            gap: 5px;
+            background: var(--surface);
+            padding: 4px;
+            border-radius: 20px;
+            border: var(--border-width) solid var(--border-color);
+        }
+        .theme-switcher button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+        .theme-switcher button:hover { transform: scale(1.2); }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        nav button {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-weight: 600;
+            border-radius: var(--btn-radius);
+            transition: all 0.2s ease;
+        }
+
+        nav button:hover {
+            color: var(--primary);
+            background: var(--border-color);
+        }
+
+        #loginNavBtn {
+            background: var(--primary);
+            color: #ffffff;
+            border: var(--border-width) solid var(--border-color);
+            box-shadow: var(--btn-shadow);
+        }
+        #loginNavBtn:hover { background: var(--primary-hover); }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section { display: none; }
+        .section.active {
+            display: block;
+            animation: fadeInScale 0.4s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 0 40px 0;
+        }
+        .hero h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content-card {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: var(--border-width) solid var(--border-color);
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .content-card h3 {
+            margin-top: 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .board-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            box-shadow: var(--btn-shadow);
+        }
+
+        .auth-box {
+            max-width: 380px;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: var(--border-width) solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding: 16px 20px;
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--btn-radius);
+            font-size: 1rem;
+            background: var(--bg);
+            color: var(--text-main);
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 16px;
+            background: var(--primary);
+            color: #ffffff;
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--btn-radius);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--btn-shadow);
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            background: var(--primary-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: var(--bg);
+            transform: translateY(0);
+        }
+
+        .notice-list-item {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            border: var(--border-width) solid var(--border-color);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .notice-list-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+        .notice-list-item strong {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+        .notice-list-item:hover strong { color: var(--primary); }
+        .notice-date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 6px 12px;
+            border-radius: 12px;
+        }
+
+        .notice-detail-header {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .notice-detail-header h3 {
+            font-size: 1.8rem;
+            margin: 0 0 10px 0;
+            color: var(--primary);
+        }
+        .notice-detail-content {
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            min-height: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="logo" onclick="navigate('home')" title="메인으로 가기">STUDY ROOM</div>
+            <div class="theme-switcher">
+                <button onclick="setTheme('default')" title="모던 테마">✨</button>
+                <button onclick="setTheme('dark')" title="다크 모드">🌙</button>
+                <button onclick="setTheme('brutal')" title="네오 브루탈리즘">🎨</button>
+            </div>
+        </div>
+        <nav>
+            <button onclick="navigate('noticeBoard', true)">공지사항</button>
+            <button onclick="navigate('videos', true)">수업 영상</button>
+            <button onclick="navigate('materials', true)">학습 자료</button>
+            <button onclick="navigate('login')" id="loginNavBtn">로그인</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="home" class="section active">
+            <div class="hero">
+                <h2>The Smart Way<br>To Learn Math</h2>
+                <p>기초부터 심화까지, 당신만을 위한 가장 완벽한 수학 학습 공간에 오신 것을 환영합니다.</p>
+            </div>
+        </div>
+
+        <div id="noticeBoard" class="section">
+            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">📢 공지사항</h2>
+            <div id="publicNoticeList"></div>
+        </div>
+
+        <div id="noticeDetail" class="section">
+            <button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('noticeBoard')">← 목록으로 돌아가기</button>
+            <div class="content-card" style="padding: 40px;">
+                <div class="notice-detail-header">
+                    <h3 id="detailTitle">공지사항 제목</h3>
+                    <span id="detailDate" class="notice-date">2024-01-01</span>
+                </div>
+                <div id="detailContent" class="notice-detail-content"></div>
+            </div>
+        </div>
+
+        <div id="videos" class="section">
+            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">수업 영상</h2>
+            <div id="videosContentContainer"></div>
+        </div>
+
+        <div id="materials" class="section">
+            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">학습 자료</h2>
+            <div id="materialsContentContainer"></div>
+        </div>
+
+        <div id="login" class="section">
+            <div class="auth-box">
+                <h2 style="text-align: center; border: none; font-weight: 900; margin:0;">Welcome back!</h2>
+                <input type="text" placeholder="아이디" id="loginId">
+                <input type="password" placeholder="비밀번호" id="loginPw">
+                <button class="btn" onclick="performLogin()">로그인</button>
+                <div style="text-align: center; font-size: 14px; color: var(--text-muted);">
+                    계정이 없으신가요? <a onclick="navigate('signup')" style="color: var(--primary); cursor: pointer; font-weight: 600;">회원가입</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="signup" class="section">
+            <div class="auth-box">
+                <h2 style="text-align: center; border: none; font-weight: 900; margin:0;">Get Started</h2>
+                <input type="text" placeholder="이름 (예: 홍길동)" id="signupName">
+                <input type="text" placeholder="입장 코드 입력 (필수)" id="signupCode">
+                <input type="text" placeholder="아이디 생성" id="signupId">
+                <input type="password" placeholder="비밀번호 생성" id="signupPw">
+                <button class="btn" onclick="performSignup()">계정 만들기</button>
+                <div style="text-align: center; font-size: 14px; color: var(--text-muted);">
+                    이미 계정이 있나요? <a onclick="navigate('login')" style="color: var(--primary); cursor: pointer; font-weight: 600;">로그인</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================================
+        // 💡 [관리자 설정 영역] 직접 GitHub에서 아래의 데이터를 수정하여 관리하세요.
+        // =====================================================================
+
+        // 1. 가입 허용 코드 설정
+        const validCodes = ['CODE2024', 'MATH100', 'VIP777', 'GUEST01', 'STUDY55'];
+
+        // 2. 사전에 가입된 회원 명부 (GitHub Pages 특성상 여기에 직접 등록해두는 것이 가장 안전합니다)
+        let members = [
+            { id: 'student01', pw: '1234', name: '김학생', code: 'CODE2024' },
+            { id: 'math-king', pw: '1234', name: '박수학', code: 'VIP777' }
+        ];
+
+        // 3. 공지사항 데이터
+        let notices = [
+            { 
+                title: "환영합니다! 스터디 룸이 새롭게 개편되었습니다. 🎉", 
+                content: "앞으로 이곳에서 다양한 수업 영상과 학습 자료를 확인하실 수 있습니다.<br> 궁금한 점이 있으시면 언제든 질문 남겨주세요. 열공하세요!",
+                date: "2024-05-01"
+            },
+            { 
+                title: "중간고사 대비 특강 일정 안내 📅", 
+                content: "다음 주 월요일부터 중간고사 대비 핵심 요약 특강이 시작됩니다.<br> 상세한 커리큘럼은 학습 자료실을 참고해 주세요.",
+                date: "2024-05-10"
+            }
+        ];
+
+        // 4. 각 게시판별 수업 영상 및 자료 링크 데이터
+        const courseData = {
+            'CODE2024': {
+                boardName: '공통수학2 심화',
+                videos: [
+                    { title: '🔥 [공통수학2] 원의 방정식 고난도 킬러 문항 정복', link: 'https://youtube.com', desc: '내신 만점을 가르는 원의 방정식 심화 변별력 문제 풀이 스킬을 다룹니다.' }
+                ],
+                materials: [
+                    { title: '📁 공통수학2 원의 방정식 최상위권 시크릿 자료', fileName: 'assets/pdf/CODE2024/sample.pdf', desc: '오답률 70% 이상의 고난도 원의 방정식 변형 문제 모음집입니다.' }
+                ]
+            },
+            'MATH100': {
+                boardName: '대수 심화',
+                videos: [
+                    { title: '📺 [대수] 지수/로그함수 고난도 그래프 추론', link: 'https://youtube.com', desc: '복잡한 그래프 개형을 파악하고 교점의 개수를 추론하는 심화 특강입니다.' }
+                ],
+                materials: [
+                    { title: '📁 대수 심화 기출 변형 50선', fileName: 'assets/pdf/MATH100/sample.pdf', desc: '최근 5개년 교육청/평가원 기출을 완벽 분석한 심화 문제집입니다.' }
+                ]
+            },
+            'VIP777': {
+                boardName: '미적분 I 심화',
+                videos: [
+                    { title: '📈 [미적분 I] 도함수의 활용과 극대/극소', link: 'https://youtube.com', desc: '다항함수의 그래프 개형을 완벽히 마스터하는 심화 개념 강의입니다.' }
+                ],
+                materials: [
+                    { title: '📁 미적분 I 킬러 문항 대비 모의고사', fileName: 'assets/pdf/VIP777/sample.pdf', desc: '고난도 미분법/적분법 문제로 구성된 실전 대비 모의고사 3회분입니다.' }
+                ]
+            },
+            'GUEST01': {
+                boardName: '미적분 II 기본',
+                videos: [
+                    { title: '🌱 [미적분 II] 초월함수의 미분법 기초', link: 'https://youtube.com', desc: '삼각함수, 지수/로그함수의 미분 공식을 증명하고 기본 예제를 풀어봅니다.' }
+                ],
+                materials: [
+                    { title: '📁 미적분 II 워크북 (기본편)', fileName: 'assets/pdf/GUEST01/sample.pdf', desc: '개념을 확실하게 다질 수 있는 단원별 필수 유형 연습문제입니다.' }
+                ]
+            },
+            'STUDY55': {
+                boardName: '확률과 통계',
+                videos: [
+                    { title: '🎲 [확통] 조건부 확률과 독립시행', link: 'https://youtube.com', desc: '헷갈리기 쉬운 조건부 확률의 개념을 명확하게 정리하는 특강입니다.' }
+                ],
+                materials: [
+                    { title: '📁 확률과 통계 빈출 유형 분석서', fileName: 'assets/pdf/STUDY55/sample.pdf', desc: '수능 및 내신에 반드시 출제되는 핵심 유형 문제와 풀이법을 담았습니다.' }
+                ]
+            }
+        };
+
+        // =====================================================================
+        // 구동 로직 (수정 불필요)
+        // =====================================================================
+
+        let isLoggedIn = false;
+        let currentUser = null;
+        let pendingTarget = null;
+
+        window.onload = function() {
+            renderNotices();
+        };
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+
+        function navigate(targetId, requiresAuth = false) {
+            if (requiresAuth && !isLoggedIn) {
+                alert("🔒 회원가입 및 로그인 후 이용 가능한 서비스입니다.");
+                pendingTarget = targetId;
+                showSection('login');
+                return;
+            }
+            showSection(targetId);
+        }
+
+        function showSection(targetId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(s => s.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (targetId === 'videos') renderDynamicCourses('videos');
+            if (targetId === 'materials') renderDynamicCourses('materials');
+        }
+
+        function performLogin() {
+            const id = document.getElementById('loginId').value.trim();
+            const pw = document.getElementById('loginPw').value.trim();
+
+            if (id === '' || pw === '') return alert("아이디와 비밀번호를 모두 입력해주세요.");
+
+            const user = members.find(m => m.id === id && m.pw === pw);
+
+            if (user) {
+                isLoggedIn = true;
+                currentUser = user; 
+                alert(`👋 ${user.name}님, 환영합니다!`);
+                
+                const btn = document.getElementById('loginNavBtn');
+                btn.innerText = "로그아웃";
+                btn.onclick = performLogout;
+
+                showSection(pendingTarget || 'home');
+                pendingTarget = null;
+                
+                document.getElementById('loginId').value = '';
+                document.getElementById('loginPw').value = '';
+            } else {
+                alert("아이디 또는 비밀번호가 일치하지 않습니다. 가입하신 정보를 다시 확인해주세요.");
+            }
+        }
+
+        function performLogout() {
+            isLoggedIn = false;
+            currentUser = null; 
+            
+            const btn = document.getElementById('loginNavBtn');
+            btn.innerText = "로그인";
+            btn.onclick = () => navigate('login');
+
+            alert("로그아웃 되었습니다.");
+            showSection('home');
+        }
+
+        function performSignup() {
+            const n = document.getElementById('signupName').value.trim();
+            const c = document.getElementById('signupCode').value.trim();
+            const i = document.getElementById('signupId').value.trim();
+            const p = document.getElementById('signupPw').value.trim();
+
+            if (n && c && i && p) {
+                if (!validCodes.includes(c)) return alert("❌ 유효하지 않은 입장 코드입니다.");
+
+                const existingUser = members.find(m => m.id === i);
+                if (existingUser) return alert("이미 존재하는 아이디입니다.");
+
+                // 참고: 정적 페이지이므로 가입 정보는 새로고침하면 사라집니다.
+                members.push({ id: i, pw: p, name: n, code: c });
+                alert("회원가입이 완료되었습니다. 방금 가입한 정보로 로그인해주세요. 🥳");
+                
+                document.getElementById('signupName').value = '';
+                document.getElementById('signupCode').value = '';
+                document.getElementById('signupId').value = '';
+                document.getElementById('signupPw').value = '';
+
+                showSection('login');
+            } else {
+                alert("모든 빈칸을 채워주세요!");
+            }
+        }
+
+        function viewNotice(index) {
+            const notice = notices[index];
+            document.getElementById('detailTitle').innerText = notice.title;
+            document.getElementById('detailDate').innerText = notice.date;
+            document.getElementById('detailContent').innerHTML = notice.content;
+            
+            showSection('noticeDetail');
+        }
+
+        function renderNotices() {
+            const html = notices.map((n, i) => `
+                <div class="notice-list-item" onclick="viewNotice(${i})">
+                    <strong>${n.title}</strong>
+                    <span class="notice-date">${n.date}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('publicNoticeList').innerHTML = html;
+        }
+
+        function renderDynamicCourses(type) {
+            const container = document.getElementById(type + 'ContentContainer');
+            container.innerHTML = ''; 
+
+            let html = '';
+
+            Object.keys(courseData).forEach(code => {
+                if (currentUser.code === code) {
+                    const board = courseData[code];
+                    const items = (type === 'videos') ? board.videos : board.materials;
+                    
+                    if (items.length > 0) {
+                        html += `<div style="margin-bottom: 40px;">`;
+                        html += `<div class="board-badge">${board.boardName} 전용 게시판</div>`;
+                        
+                        items.forEach(item => {
+                            const bgIcon = (type === 'videos') ? '📺' : '📁';
+                            let actionHTML = '';
+                            
+                            if (type === 'videos') {
+                                actionHTML = `<button class="btn btn-outline" style="width: 100%; padding: 12px; margin-top: 10px;" onclick="window.open('${item.link}', '_blank')">유튜브 영상 보기 ▶</button>`;
+                            } else {
+                                actionHTML = `<a href="${item.fileName}" download class="btn btn-outline" style="display: block; text-align: center; text-decoration: none; width: 100%; box-sizing: border-box; padding: 12px; margin-top: 10px;">PDF 파일 다운로드 ⬇</a>`;
+                            }
+
+                            html += `
+                                <div class="content-card" style="margin-top: 10px;">
+                                    <div style="width: 100%; height: ${(type === 'videos') ? '150px' : '80px'}; background: var(--bg); border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                                        ${bgIcon}
+                                    </div>
+                                    <h3>${item.title}</h3>
+                                    <p>${item.desc}</p>
+                                    ${actionHTML}
+                                </div>
+                            `;
+                        });
+                        html += `</div>`;
+                    }
+                }
+            });
+
+            if (html === '') {
+                html = '<p style="text-align: center; color: var(--text-muted);">현재 접근 가능한 게시판이 없거나 업로드된 내용이 없습니다.</p>';
+            }
+
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
