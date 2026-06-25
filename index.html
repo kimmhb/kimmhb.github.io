@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>다중 테마 학습 플랫폼</title>
+    <title>김현보 수학</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
     <style>
         /* 기본 테마 (모던) */
@@ -336,8 +336,8 @@
     <div class="container">
         <div id="home" class="section active">
             <div class="hero">
-                <h2>The Smart Way<br>To Learn Math</h2>
-                <p>기초부터 심화까지, 당신만을 위한 가장 완벽한 수학 학습 공간에 오신 것을 환영합니다.</p>
+                <h2>POV<br>Point of View</h2>
+                <p>'실전 관점'으로 접근하는 수학</p>
             </div>
         </div>
 
@@ -369,7 +369,7 @@
 
         <div id="login" class="section">
             <div class="auth-box">
-                <h2 style="text-align: center; border: none; font-weight: 900; margin:0;">Welcome back!</h2>
+                <h2 style="text-align: center; border: none; font-weight: 900; margin:0;">응원합니다!</h2>
                 <input type="text" placeholder="아이디" id="loginId">
                 <input type="password" placeholder="비밀번호" id="loginPw">
                 <button class="btn" onclick="performLogin()">로그인</button>
@@ -394,15 +394,17 @@
         </div>
     </div>
 
+    <script src="./file_list.js"></script>
+
     <script>
         // =====================================================================
         // 💡 [관리자 설정 영역] 직접 GitHub에서 아래의 데이터를 수정하여 관리하세요.
         // =====================================================================
 
         // 1. 가입 허용 코드 설정
-        const validCodes = ['CODE2024', 'MATH100', 'VIP777', 'GUEST01', 'STUDY55'];
+        const validCodes = ['class101', 'class102', 'class103', 'class201', 'class202', 'class203' ];
 
-        // 2. 사전에 가입된 회원 명부 (GitHub Pages 특성상 여기에 직접 등록해두는 것이 가장 안전합니다)
+        // 2. 사전에 가입된 회원 명부 
         let members = [
             { id: 'student01', pw: '1234', name: '김학생', code: 'CODE2024' },
             { id: 'math-king', pw: '1234', name: '박수학', code: 'VIP777' }
@@ -422,51 +424,36 @@
             }
         ];
 
-        // 4. 각 게시판별 수업 영상 및 자료 링크 데이터
+        // 4. 게시판별 기본 세팅 (학습 자료 배열은 비워두면 자동 연동됩니다)
         const courseData = {
             'CODE2024': {
                 boardName: '공통수학2 심화',
                 videos: [
                     { title: '🔥 [공통수학2] 원의 방정식 고난도 킬러 문항 정복', link: 'https://youtube.com', desc: '내신 만점을 가르는 원의 방정식 심화 변별력 문제 풀이 스킬을 다룹니다.' }
-                ],
-                materials: [
-                    { title: '📁 공통수학2 원의 방정식 최상위권 시크릿 자료', fileName: 'assets/pdf/CODE2024/sample.pdf', desc: '오답률 70% 이상의 고난도 원의 방정식 변형 문제 모음집입니다.' }
                 ]
             },
             'MATH100': {
                 boardName: '대수 심화',
                 videos: [
                     { title: '📺 [대수] 지수/로그함수 고난도 그래프 추론', link: 'https://youtube.com', desc: '복잡한 그래프 개형을 파악하고 교점의 개수를 추론하는 심화 특강입니다.' }
-                ],
-                materials: [
-                    { title: '📁 대수 심화 기출 변형 50선', fileName: 'assets/pdf/MATH100/sample.pdf', desc: '최근 5개년 교육청/평가원 기출을 완벽 분석한 심화 문제집입니다.' }
                 ]
             },
             'VIP777': {
                 boardName: '미적분 I 심화',
                 videos: [
                     { title: '📈 [미적분 I] 도함수의 활용과 극대/극소', link: 'https://youtube.com', desc: '다항함수의 그래프 개형을 완벽히 마스터하는 심화 개념 강의입니다.' }
-                ],
-                materials: [
-                    { title: '📁 미적분 I 킬러 문항 대비 모의고사', fileName: 'assets/pdf/VIP777/sample.pdf', desc: '고난도 미분법/적분법 문제로 구성된 실전 대비 모의고사 3회분입니다.' }
                 ]
             },
             'GUEST01': {
                 boardName: '미적분 II 기본',
                 videos: [
                     { title: '🌱 [미적분 II] 초월함수의 미분법 기초', link: 'https://youtube.com', desc: '삼각함수, 지수/로그함수의 미분 공식을 증명하고 기본 예제를 풀어봅니다.' }
-                ],
-                materials: [
-                    { title: '📁 미적분 II 워크북 (기본편)', fileName: 'assets/pdf/GUEST01/sample.pdf', desc: '개념을 확실하게 다질 수 있는 단원별 필수 유형 연습문제입니다.' }
                 ]
             },
             'STUDY55': {
                 boardName: '확률과 통계',
                 videos: [
                     { title: '🎲 [확통] 조건부 확률과 독립시행', link: 'https://youtube.com', desc: '헷갈리기 쉬운 조건부 확률의 개념을 명확하게 정리하는 특강입니다.' }
-                ],
-                materials: [
-                    { title: '📁 확률과 통계 빈출 유형 분석서', fileName: 'assets/pdf/STUDY55/sample.pdf', desc: '수능 및 내신에 반드시 출제되는 핵심 유형 문제와 풀이법을 담았습니다.' }
                 ]
             }
         };
@@ -558,7 +545,6 @@
                 const existingUser = members.find(m => m.id === i);
                 if (existingUser) return alert("이미 존재하는 아이디입니다.");
 
-                // 참고: 정적 페이지이므로 가입 정보는 새로고침하면 사라집니다.
                 members.push({ id: i, pw: p, name: n, code: c });
                 alert("회원가입이 완료되었습니다. 방금 가입한 정보로 로그인해주세요. 🥳");
                 
@@ -600,9 +586,24 @@
             let html = '';
 
             Object.keys(courseData).forEach(code => {
+                // 현재 접속한 학생의 코드에 맞는 자료만 보여줍니다.
                 if (currentUser.code === code) {
                     const board = courseData[code];
-                    const items = (type === 'videos') ? board.videos : board.materials;
+                    let items = [];
+
+                    // 💡 핵심 로직: 학습 자료 탭일 경우 GitHub Actions(file_list.js) 데이터를 불러옵니다.
+                    if (type === 'videos') {
+                        items = board.videos || [];
+                    } else if (type === 'materials') {
+                        if (typeof classFiles !== 'undefined' && classFiles[code]) {
+                            // file_list.js에 해당 코드(예: CODE2024)의 파일이 있다면 배열 형태로 변환
+                            items = classFiles[code].map(file => ({
+                                title: `📄 ${file}`,
+                                fileName: `./assets/${code}/${file}`,
+                                desc: 'GitHub Actions를 통해 자동으로 업데이트된 수업 자료입니다.'
+                            }));
+                        }
+                    }
                     
                     if (items.length > 0) {
                         html += `<div style="margin-bottom: 40px;">`;
