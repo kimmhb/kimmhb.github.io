@@ -47,6 +47,90 @@
         .notice-detail-header { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px dashed var(--border-color); }
         .notice-detail-header h3 { font-size: 1.8rem; margin: 0 0 10px 0; color: var(--primary); }
         .notice-detail-content { line-height: 1.8; font-size: 1.05rem; color: var(--text-muted); min-height: 150px; }
+/* =======================================================
+   📱 모바일 반응형 (화면 너비 768px 이하일 때 자동 적용)
+   ======================================================= */
+@media (max-width: 768px) {
+    /* 상단 헤더: 로고와 메뉴를 위아래로 배치하고 간격 축소 */
+    header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 5%;
+    }
+    nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    nav button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    /* 전체 여백 및 메인 타이틀 축소 */
+    .container {
+        margin: 30px auto;
+    }
+    .hero {
+        padding: 40px 0 20px 0;
+    }
+    .hero h2 {
+        font-size: 2.2rem; /* 기존 3.5rem에서 축소 */
+        margin-bottom: 15px;
+    }
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    /* 각 섹션 제목 크기 축소 */
+    .section h2 {
+        font-size: 1.5rem !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* 카드 및 입력폼(로그인/가입) 여백과 폰트 축소 */
+    .content-card {
+        padding: 24px;
+    }
+    .content-card h3 {
+        font-size: 1.2rem;
+    }
+    .auth-box {
+        padding: 24px;
+        margin: 20px auto;
+        gap: 16px;
+    }
+    input[type="text"], input[type="password"] {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+    .btn {
+        padding: 14px;
+        font-size: 1rem;
+    }
+
+    /* 게시판 및 공지사항 레이아웃 최적화 */
+    .notice-list-item {
+        padding: 16px;
+        flex-direction: column; /* 제목과 날짜를 위아래로 배치 */
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .notice-list-item strong {
+        font-size: 1rem;
+    }
+    .notice-date {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+    .notice-detail-header h3 {
+        font-size: 1.4rem;
+    }
+    .notice-detail-content {
+        font-size: 0.95rem;
+    }
+}
     </style>
 </head>
 <body>
