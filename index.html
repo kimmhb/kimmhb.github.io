@@ -6,7 +6,7 @@
     <title>김현보 수학</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
     <style>
-        /* 기본 테마 (모던) */
+        /* default theme */
         :root {
             --bg: #F8FAFC;
             --surface: #FFFFFF;
@@ -23,7 +23,7 @@
             --glass-bg: rgba(255, 255, 255, 0.7);
         }
 
-        /* 다크 모드 테마 */
+        /* dark mode theme */
         [data-theme="dark"] {
             --bg: #0F172A;
             --surface: #1E293B;
@@ -40,7 +40,7 @@
             --glass-bg: rgba(15, 23, 42, 0.8);
         }
 
-        /* 네오 브루탈리즘 테마 */
+        /* brutalism theme */
         [data-theme="brutal"] {
             --bg: #FFFDF0; 
             --surface: #FFFFFF;
@@ -318,11 +318,11 @@
 
     <header>
         <div class="header-left">
-            <div class="logo" onclick="navigate('home')" title="메인으로 가기">김현보 수학</div>
+            <div class="logo" onclick="navigate('home')">김현보 수학</div>
             <div class="theme-switcher">
-                <button onclick="setTheme('default')" title="모던 테마">✨</button>
-                <button onclick="setTheme('dark')" title="다크 모드">🌙</button>
-                <button onclick="setTheme('brutal')" title="네오 브루탈리즘">🎨</button>
+                <button onclick="setTheme('default')">✨</button>
+                <button onclick="setTheme('dark')">🌙</button>
+                <button onclick="setTheme('brutal')">🎨</button>
             </div>
         </div>
         <nav>
@@ -347,7 +347,7 @@
         </div>
 
         <div id="noticeDetail" class="section">
-            <button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('noticeBoard')">← 목록으로 돌아가기</button>
+            <button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('noticeBoard')">← 목록으로 </button>
             <div class="content-card" style="padding: 40px;">
                 <div class="notice-detail-header">
                     <h3 id="detailTitle">공지사항 제목</h3>
@@ -381,11 +381,11 @@
 
         <div id="signup" class="section">
             <div class="auth-box">
-                <h2 style="text-align: center; border: none; font-weight: 900; margin:0;">Get Started</h2>
-                <input type="text" placeholder="이름 (예: 홍길동)" id="signupName">
-                <input type="text" placeholder="입장 코드 입력 (필수)" id="signupCode">
-                <input type="text" placeholder="아이디 생성" id="signupId">
-                <input type="password" placeholder="비밀번호 생성" id="signupPw">
+                <h2 style="text-align: center; border: none; font-weight: 900; margin:0;">반갑습니다!</h2>
+                <input type="text" placeholder="이름 (실명)" id="signupName">
+                <input type="text" placeholder="반 코드 (필수)" id="signupCode">
+                <input type="text" placeholder="아이디" id="signupId">
+                <input type="password" placeholder="비밀번호" id="signupPw">
                 <button class="btn" onclick="performSignup()">계정 만들기</button>
                 <div style="text-align: center; font-size: 14px; color: var(--text-muted);">
                     이미 계정이 있나요? <a onclick="navigate('login')" style="color: var(--primary); cursor: pointer; font-weight: 600;">로그인</a>
@@ -398,7 +398,7 @@
 
     <script>
         // =====================================================================
-        // 💡 [관리자 설정 영역] 직접 GitHub에서 아래의 데이터를 수정하여 관리하세요.
+        // [관리자 설정]
         // =====================================================================
 
         // 1. 가입 허용 코드 설정
@@ -424,7 +424,7 @@
             }
         ];
 
-        // 4. 게시판별 기본 세팅 (학습 자료 배열은 비워두면 자동 연동됩니다)
+        // 4. 게시판별 기본 세팅
         const courseData = {
             'class101': {
                 boardName: '공통수학2 심화',
@@ -459,7 +459,7 @@
         };
 
         // =====================================================================
-        // 구동 로직 (수정 불필요)
+        // 구동 로직
         // =====================================================================
 
         let isLoggedIn = false;
@@ -495,7 +495,7 @@
 
         function navigate(targetId, requiresAuth = false) {
             if (requiresAuth && !isLoggedIn) {
-                alert("🔒 회원가입 및 로그인 후 이용 가능한 서비스입니다.");
+                alert("🔒 회원가입 및 로그인 후 이용 가능합니다.");
                 pendingTarget = targetId;
                 showSection('login');
                 return;
