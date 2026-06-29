@@ -7,8 +7,8 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
     <style>
         :root { --bg: #F8FAFC; --surface: #FFFFFF; --primary: #6366F1; --primary-hover: #4F46E5; --text-main: #0F172A; --text-muted: #64748B; --border-color: rgba(0, 0, 0, 0.05); --border-width: 1px; --shadow: 0 10px 40px rgba(0, 0, 0, 0.04); --btn-shadow: 0 8px 16px rgba(99, 102, 241, 0.2); --radius: 24px; --btn-radius: 16px; --glass-bg: rgba(255, 255, 255, 0.7); }
-        [data-theme="dark"] { --bg: #0F172A; --surface: #1E293B; --primary: #38BDF8;  --primary-hover: #0284C7; --text-main: #F8FAFC; --text-muted: #94A3B8; --border-color: rgba(255, 255, 255, 0.1); --border-width: 1px; --shadow: 0 10px 40px rgba(0, 0, 0, 0.4); --btn-shadow: 0 8px 16px rgba(56, 189, 248, 0.2); --radius: 24px; --btn-radius: 16px; --glass-bg: rgba(15, 23, 42, 0.8); }
-        [data-theme="brutal"] { --bg: #FFFDF0;  --surface: #FFFFFF; --primary: #FF3366;  --primary-hover: #E60039; --text-main: #000000; --text-muted: #333333; --border-color: #000000; --border-width: 3px; --shadow: 6px 6px 0px #000000;  --btn-shadow: 4px 4px 0px #000000; --radius: 0px;  --btn-radius: 0px; --glass-bg: #FFFDF0;  }
+        [data-theme="dark"] { --bg: #0F172A; --surface: #1E293B; --primary: #38BDF8; --primary-hover: #0284C7; --text-main: #F8FAFC; --text-muted: #94A3B8; --border-color: rgba(255, 255, 255, 0.1); --border-width: 1px; --shadow: 0 10px 40px rgba(0, 0, 0, 0.4); --btn-shadow: 0 8px 16px rgba(56, 189, 248, 0.2); --radius: 24px; --btn-radius: 16px; --glass-bg: rgba(15, 23, 42, 0.8); }
+        [data-theme="brutal"] { --bg: #FFFDF0; --surface: #FFFFFF; --primary: #FF3366; --primary-hover: #E60039; --text-main: #000000; --text-muted: #333333; --border-color: #000000; --border-width: 3px; --shadow: 6px 6px 0px #000000; --btn-shadow: 4px 4px 0px #000000; --radius: 0px; --btn-radius: 0px; --glass-bg: #FFFDF0; }
         body { font-family: 'Pretendard Variable', sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: var(--text-main); overflow-x: hidden; min-height: 100vh; transition: background-color 0.3s ease, color 0.3s ease; }
         header { position: sticky; top: 0; z-index: 1000; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: var(--border-width) solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 5%; transition: all 0.3s ease; }
         .header-left { display: flex; align-items: center; gap: 20px; }
@@ -32,19 +32,7 @@
         .content-card h3 { margin-top: 0; font-size: 1.4rem; font-weight: 800; }
         .board-badge { display: inline-block; background: var(--primary); color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; margin-bottom: 15px; box-shadow: var(--btn-shadow); }
         .auth-box { max-width: 380px; margin: 40px auto; padding: 40px; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: var(--border-width) solid var(--border-color); display: flex; flex-direction: column; gap: 20px; }
-        
-        input[type="text"], input[type="password"], input[type="date"], input[type="number"] { 
-            padding: 16px 20px; 
-            border: var(--border-width) solid var(--border-color); 
-            border-radius: var(--btn-radius); 
-            font-size: 1rem; 
-            background: var(--bg); 
-            color: var(--text-main); 
-            transition: 0.3s; 
-            font-family: inherit; 
-            box-sizing: border-box; 
-            width: 100%;
-        }
+        input[type="text"], input[type="password"], input[type="date"], input[type="number"] { padding: 16px 20px; border: var(--border-width) solid var(--border-color); border-radius: var(--btn-radius); font-size: 1rem; background: var(--bg); color: var(--text-main); transition: 0.3s; font-family: inherit; box-sizing: border-box; width: 100%; }
         input:focus { outline: none; border-color: var(--primary); }
         .btn { padding: 16px; background: var(--primary); color: #ffffff; border: var(--border-width) solid var(--border-color); border-radius: var(--btn-radius); font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: var(--btn-shadow); transition: 0.2s; font-family: inherit; border: none; }
         .btn:hover { transform: translateY(-2px); background: var(--primary-hover); }
@@ -59,7 +47,6 @@
         .notice-detail-header { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px dashed var(--border-color); }
         .notice-detail-header h3 { font-size: 1.8rem; margin: 0 0 10px 0; color: var(--primary); }
         .notice-detail-content { line-height: 1.8; font-size: 1.05rem; color: var(--text-muted); min-height: 150px; }
-        
         .video-board { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .video-board th, .video-board td { border-bottom: var(--border-width) solid var(--border-color); padding: 16px 10px; text-align: center; }
         .video-board th { background-color: var(--border-color); font-weight: 800; color: var(--text-main); }
@@ -68,11 +55,7 @@
         .video-board tr:hover { background-color: var(--border-color); }
         .video-title { color: var(--text-main); font-weight: 700; transition: color 0.2s; }
         .video-board tr:hover .video-title { color: var(--primary); }
-
-        /* 클리닉 카드 내부 정렬용 */
         .clinic-item { display: flex; justify-content: space-between; align-items: center; padding: 24px; }
-
-        /* 모바일 반응형 */
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 12px; padding: 12px 5%; }
             nav { width: 100%; justify-content: center; flex-wrap: wrap; gap: 4px; }
@@ -94,15 +77,12 @@
             .notice-detail-content { font-size: 0.95rem; }
             .video-board th:nth-child(3), .video-board td:nth-child(3) { display: none; }
             .video-board td { padding: 12px 5px; font-size: 0.95rem; }
-            
-            /* 모바일에서 클리닉 버튼 아래로 내리기 */
             .clinic-item { flex-direction: column; align-items: flex-start; gap: 16px; }
             .clinic-item .btn { width: 100%; }
         }
     </style>
 </head>
 <body>
-
     <header>
         <div class="header-left">
             <div class="logo" onclick="navigate('home')" title="메인으로 가기">김현보 수학</div>
@@ -123,105 +103,145 @@
     </header>
 
     <div class="container">
-        <div id="home" class="section active">
-            <div class="hero">
-                <h2>POV<br>Point of View</h2>
-                <p>'실전 관점'으로 접근하는 수학</p>
-            </div>
-        </div>
-
-        <div id="noticeBoard" class="section">
-            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">📢 공지사항</h2>
-            <div id="publicNoticeList"></div>
-        </div>
-        
-        <div id="noticeDetail" class="section">
-            <button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('noticeBoard')">← 목록으로 돌아가기</button>
-            <div class="content-card" style="padding: 40px;">
-                <div class="notice-detail-header">
-                    <h3 id="detailTitle"></h3>
-                    <span id="detailDate" class="notice-date"></span>
-                </div>
-                <div id="detailContent" class="notice-detail-content"></div>
-            </div>
-        </div>
-
-        <div id="videos" class="section">
-            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">🎬 수업 영상</h2>
-            <div id="videosContentContainer"></div>
-        </div>
-        
-        <div id="videoDetail" class="section">
-            <button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('videos')">← 목록으로 돌아가기</button>
-            <div class="content-card" style="padding: 40px;">
-                <div class="notice-detail-header">
-                    <div id="videoDetailBadge" class="board-badge" style="margin-bottom: 10px;"></div>
-                    <h3 id="videoDetailTitle"></h3>
-                </div>
-                <div id="videoDetailMedia" style="margin-bottom: 20px;"></div>
-                <div id="videoDetailDesc" class="notice-detail-content"></div>
-            </div>
-        </div>
-
-        <div id="materials" class="section">
-            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">학습 자료</h2>
-            <div id="materialsContentContainer"></div>
-        </div>
-
-        <div id="clinicBoard" class="section">
-            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">🕒 클리닉 예약</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">원하는 날짜의 클리닉을 확인하고 선착순으로 예약하세요!</p>
-            <div id="clinicListContainer"></div>
-        </div>
-
-        <div id="adminClinic" class="section">
-            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">⚙️ 클리닉 일정 관리</h2>
-            <div class="auth-box" style="max-width: 500px; margin: 0 auto;">
-                <h3 style="margin-top: 0; text-align: center;">새로운 클리닉 오픈</h3>
-                <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
-                    원하는 날짜와 시간, 예약 정원을 설정해주세요.
-                </p>
-                <input type="date" id="clinicDate" title="클리닉 날짜 선택">
-                <input type="text" id="clinicTime" placeholder="시간 (예: 20:00 ~ 22:00)">
-                <input type="number" id="clinicMax" placeholder="예약 정원 (예: 10명)">
-                <button class="btn" onclick="createClinic()" id="clinicSubmitBtn">일정 열기</button>
-            </div>
-        </div>
-
-        <div id="login" class="section">
-            <div class="auth-box">
-                <h2 style="text-align: center; font-weight: 900; margin:0;">응원합니다!</h2>
-                <input type="text" placeholder="아이디" id="loginId">
-                <input type="password" placeholder="비밀번호 (6자리 이상)" id="loginPw">
-                <button class="btn" onclick="performLogin()" id="loginSubmitBtn">로그인</button>
-                <div style="text-align: center; font-size: 14px; color: var(--text-muted);">
-                    계정이 없으신가요? <a onclick="navigate('signup')" style="color: var(--primary); cursor: pointer; font-weight: 600;">회원가입</a>
-                </div>
-            </div>
-        </div>
-
-        <div id="signup" class="section">
-            <div class="auth-box">
-                <h2 style="text-align: center; font-weight: 900; margin:0;">Get Started</h2>
-                <input type="text" placeholder="이름 (예: 홍길동)" id="signupName">
-                <input type="text" placeholder="입장 코드 입력 (필수)" id="signupCode">
-                <input type="text" placeholder="아이디 생성 (영문/숫자)" id="signupId">
-                <input type="password" placeholder="비밀번호 생성 (6자리 이상)" id="signupPw">
-                <button class="btn" onclick="performSignup()" id="signupSubmitBtn">계정 만들기</button>
-                <div style="text-align: center; font-size: 14px; color: var(--text-muted);">
-                    이미 계정이 있나요? <a onclick="navigate('login')" style="color: var(--primary); cursor: pointer; font-weight: 600;">로그인</a>
-                </div>
-            </div>
-        </div>
+        <div id="home" class="section active"><div class="hero"><h2>POV<br>Point of View</h2><p>'실전 관점'으로 접근하는 수학</p></div></div>
+        <div id="noticeBoard" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">📢 공지사항</h2><div id="publicNoticeList"></div></div>
+        <div id="noticeDetail" class="section"><button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('noticeBoard')">← 목록으로 돌아가기</button><div class="content-card" style="padding: 40px;"><div class="notice-detail-header"><h3 id="detailTitle"></h3><span id="detailDate" class="notice-date"></span></div><div id="detailContent" class="notice-detail-content"></div></div></div>
+        <div id="videos" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">🎬 수업 영상</h2><div id="videosContentContainer"></div></div>
+        <div id="videoDetail" class="section"><button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('videos')">← 목록으로 돌아가기</button><div class="content-card" style="padding: 40px;"><div class="notice-detail-header"><div id="videoDetailBadge" class="board-badge" style="margin-bottom: 10px;"></div><h3 id="videoDetailTitle"></h3></div><div id="videoDetailMedia" style="margin-bottom: 20px;"></div><div id="videoDetailDesc" class="notice-detail-content"></div></div></div>
+        <div id="materials" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">학습 자료</h2><div id="materialsContentContainer"></div></div>
+        <div id="clinicBoard" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">🕒 클리닉 예약</h2><p style="color: var(--text-muted); margin-bottom: 20px;">원하는 날짜의 클리닉을 확인하고 선착순으로 예약하세요!</p><div id="clinicListContainer"></div></div>
+        <div id="adminClinic" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">⚙️ 클리닉 일정 관리</h2><div class="auth-box" style="max-width: 500px; margin: 0 auto;"><h3 style="margin-top: 0; text-align: center;">새로운 클리닉 오픈</h3><p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">원하는 날짜와 시간, 예약 정원을 설정해주세요.</p><input type="date" id="clinicDate"><input type="text" id="clinicTime" placeholder="시간 (예: 20:00 ~ 22:00)"><input type="number" id="clinicMax" placeholder="예약 정원 (예: 10명)"><button class="btn" onclick="createClinic()" id="clinicSubmitBtn">일정 열기</button></div></div>
+        <div id="login" class="section"><div class="auth-box"><h2 style="text-align: center; font-weight: 900; margin:0;">응원합니다!</h2><input type="text" placeholder="아이디" id="loginId"><input type="password" placeholder="비밀번호 (6자리 이상)" id="loginPw"><button class="btn" onclick="performLogin()" id="loginSubmitBtn">로그인</button><div style="text-align: center; font-size: 14px; color: var(--text-muted);">계정이 없으신가요? <a onclick="navigate('signup')" style="color: var(--primary); cursor: pointer; font-weight: 600;">회원가입</a></div></div></div>
+        <div id="signup" class="section"><div class="auth-box"><h2 style="text-align: center; font-weight: 900; margin:0;">Get Started</h2><input type="text" placeholder="이름 (예: 홍길동)" id="signupName"><input type="text" placeholder="입장 코드 입력 (필수)" id="signupCode"><input type="text" placeholder="아이디 생성 (영문/숫자)" id="signupId"><input type="password" placeholder="비밀번호 생성 (6자리 이상)" id="signupPw"><button class="btn" onclick="performSignup()" id="signupSubmitBtn">계정 만들기</button><div style="text-align: center; font-size: 14px; color: var(--text-muted);">이미 계정이 있나요? <a onclick="navigate('login')" style="color: var(--primary); cursor: pointer; font-weight: 600;">로그인</a></div></div></div>
     </div>
-
     <script src="./file_list.js"></script>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        // 💡 트랜잭션(runTransaction), 컬렉션 조회(collection, getDocs) 기능 추가
         import { getFirestore, doc, setDoc, getDoc, collection, getDocs, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAf7Oez1
+        const firebaseConfig = { apiKey: "AIzaSyAf7Oez1X8lja7uTIsGs_PRda4aMjWYcqA", authDomain: "kimmhb.firebaseapp.com", projectId: "kimmhb", storageBucket: "kimmhb.firebasestorage.app", messagingSenderId: "760747546538", appId: "1:760747546538:web:266db9e9daab37a8467dd3" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const validCodes = ['class101', 'class102', 'class103', 'class201', 'class202', 'class203'];
+        const notices = [ { title: "notices test2 : LIFO implementation 🎉", content: "appears after clicking the button", date: "2026-05-01" }, { title: "notices test with some icons 📅", content: "notices = [ {}, {}, ... ].", date: "2026-06-10" } ];
+        const courseData = { 'class101': { boardName: '공통수학2 심화', videos: [{ title: '[TEST]', link: 'https://www.youtube.com/watch?v=MYGj54xrdoY', desc: '심화 문제 풀이' }] }, 'class102': { boardName: '대수 심화', videos: [{ title: '지수/로그함수 고난도', link: 'https://youtube.com', desc: '심화 특강' }] } };
+        let isLoggedIn = false, currentUser = null, pendingTarget = null;
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    currentUser = docSnap.data();
+                    isLoggedIn = true;
+                    const btn = document.getElementById('loginNavBtn');
+                    btn.innerText = "로그아웃";
+                    btn.onclick = () => window.performLogout();
+                    document.getElementById('adminMenuBtn').style.display = (currentUser.userId === 'admin') ? 'inline-block' : 'none';
+                }
+            } else {
+                isLoggedIn = false; currentUser = null;
+                document.getElementById('loginNavBtn').innerText = "로그인";
+                document.getElementById('loginNavBtn').onclick = () => window.navigate('login');
+                document.getElementById('adminMenuBtn').style.display = 'none';
+            }
+        });
+        window.onload = () => { window.setTheme(localStorage.getItem('theme') || 'default'); window.renderNotices(); };
+        window.setTheme = (theme) => { document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); };
+        window.navigate = (targetId, requiresAuth = false) => {
+            if (requiresAuth && !isLoggedIn) { alert("🔒 회원가입 및 로그인 후 이용 가능한 서비스입니다."); pendingTarget = targetId; window.showSection('login'); return; }
+            window.showSection(targetId);
+        };
+        window.showSection = (targetId) => {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if(targetId !== 'videoDetail') document.getElementById('videoDetailMedia').innerHTML = '';
+            if (targetId === 'videos') window.renderDynamicCourses('videos');
+            if (targetId === 'materials') window.renderDynamicCourses('materials');
+            if (targetId === 'clinicBoard') window.renderClinics();
+        };
+        window.performSignup = async function() {
+            const name = document.getElementById('signupName').value.trim(), code = document.getElementById('signupCode').value.trim(), id = document.getElementById('signupId').value.trim(), pw = document.getElementById('signupPw').value.trim();
+            if (!name || !code || !id || !pw) return alert("모든 빈칸을 채워주세요!");
+            if (!validCodes.includes(code)) return alert("❌ 유효하지 않은 입장 코드입니다.");
+            if (pw.length < 6) return alert("비밀번호는 최소 6자리 이상이어야 합니다.");
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, `${id}@kimmath.com`, pw);
+                await setDoc(doc(db, "users", userCredential.user.uid), { userId: id, name: name, code: code, createdAt: new Date().toISOString() });
+                alert("회원가입 완료! 🥳"); window.showSection('login');
+            } catch (error) { alert("회원가입 오류: " + error.message); }
+        };
+        window.performLogin = async function() {
+            const id = document.getElementById('loginId').value.trim(), pw = document.getElementById('loginPw').value.trim();
+            if (!id || !pw) return alert("아이디/비번을 입력해주세요.");
+            try {
+                await signInWithEmailAndPassword(auth, `${id}@kimmath.com`, pw);
+                window.showSection(pendingTarget || 'home'); pendingTarget = null;
+            } catch (error) { alert("아이디 또는 비밀번호가 일치하지 않습니다."); }
+        };
+        window.performLogout = async () => { await signOut(auth); alert("로그아웃 되었습니다."); window.showSection('home'); };
+        window.createClinic = async function() {
+            const date = document.getElementById('clinicDate').value, time = document.getElementById('clinicTime').value.trim(), max = parseInt(document.getElementById('clinicMax').value);
+            if (!date || !time || isNaN(max) || max <= 0) return alert("입력값 오류");
+            try { await setDoc(doc(db, "clinics", date), { date, time, max_capacity: max, current_count: 0, booked_users: [] }); alert("오픈 완료!"); } catch (e) { alert("생성 실패"); }
+        };
+        window.renderClinics = async function() {
+            const container = document.getElementById('clinicListContainer'); container.innerHTML = '불러오는 중...';
+            const snapshot = await getDocs(collection(db, "clinics"));
+            let html = '';
+            snapshot.forEach((doc) => {
+                const d = doc.data();
+                const isBooked = d.booked_users.includes(currentUser.name);
+                const isFull = d.current_count >= d.max_capacity;
+                html += `<div class="content-card clinic-item"><div><h3>📅 ${d.date} 클리닉</h3><p>⏰ ${d.time}<br>👥 ${d.current_count}/${d.max_capacity}명</p></div><div><button class="btn" ${isBooked || isFull ? 'disabled' : ''} onclick="bookClinic('${doc.id}')">${isBooked ? '예약완료 ✅' : (isFull ? '마감' : '예약하기')}</button></div></div>`;
+            });
+            container.innerHTML = html || '일정이 없습니다.';
+        };
+        window.bookClinic = async function(clinicId) {
+            try {
+                await runTransaction(db, async (t) => {
+                    const ref = doc(db, "clinics", clinicId);
+                    const docData = await t.get(ref);
+                    const d = docData.data();
+                    if (d.booked_users.includes(currentUser.name)) throw "이미 예약함!";
+                    if (d.current_count >= d.max_capacity) throw "마감됨!";
+                    t.update(ref, { current_count: d.current_count + 1, booked_users: [...d.booked_users, currentUser.name] });
+                });
+                alert("예약 성공!"); window.renderClinics();
+            } catch (e) { alert(e); }
+        };
+        window.renderNotices = function() {
+            document.getElementById('publicNoticeList').innerHTML = notices.map((n, i) => `<div class="notice-list-item" onclick="viewNotice(${i})"><strong>${n.title}</strong><span class="notice-date">${n.date}</span></div>`).join('');
+        };
+        window.viewNotice = (i) => { const n = notices[i]; document.getElementById('detailTitle').innerText = n.title; document.getElementById('detailDate').innerText = n.date; document.getElementById('detailContent').innerHTML = n.content; window.showSection('noticeDetail'); };
+        window.renderDynamicCourses = function(type) {
+            const container = document.getElementById(type + 'ContentContainer'); container.innerHTML = '';
+            if (!currentUser) return;
+            Object.keys(courseData).forEach(code => {
+                if (currentUser.code === code) {
+                    const board = courseData[code];
+                    let html = `<div style="margin-bottom: 40px;"><div class="board-badge">${board.boardName} 전용 게시판</div>`;
+                    if (type === 'videos') {
+                        html += `<div class="content-card" style="padding: 10px 20px;"><table class="video-board"><thead><tr><th width="10%">번호</th><th width="60%">강의 제목</th><th width="30%">설명</th></tr></thead><tbody>`;
+                        board.videos.forEach((v, i) => html += `<tr onclick="window.viewVideo('${code}', ${i})"><td>${i+1}</td><td><span class="video-title">${v.title}</span></td><td>${v.desc}</td></tr>`);
+                        html += `</tbody></table></div>`;
+                    } else if (type === 'materials' && typeof classFiles !== 'undefined' && classFiles[code]) {
+                        classFiles[code].forEach(f => html += `<div class="content-card"><h3>📄 ${f}</h3><a href="./assets/${code}/${f}" download class="btn btn-outline" style="display:block; text-align:center; padding:12px;">다운로드 ⬇</a></div>`);
+                    }
+                    container.innerHTML += html + '</div>';
+                }
+            });
+        };
+        window.viewVideo = function(code, index) {
+            const v = courseData[code].videos[index];
+            document.getElementById('videoDetailBadge').innerText = courseData[code].boardName;
+            document.getElementById('videoDetailTitle').innerText = v.title;
+            document.getElementById('videoDetailDesc').innerText = v.desc;
+            document.getElementById('videoDetailMedia').innerHTML = `<div style="position:relative; padding-bottom:56.25%; height:0; background:#000;"><iframe style="position:absolute; width:100%; height:100%;" src="https://www.youtube.com/embed/${getYouTubeVideoId(v.link)}" frameborder="0" allowfullscreen></iframe></div>`;
+            window.showSection('videoDetail');
+        };
+        function getYouTubeVideoId(url) { const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); return (match && match[2].length === 11) ? match[2] : null; }
+    </script>
+</body>
+</html>
