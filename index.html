@@ -107,7 +107,7 @@
         <div id="noticeBoard" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">📢 공지사항</h2><div id="publicNoticeList"></div></div>
         <div id="noticeDetail" class="section"><button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('noticeBoard')">← 목록으로 돌아가기</button><div class="content-card" style="padding: 40px;"><div class="notice-detail-header"><h3 id="detailTitle"></h3><span id="detailDate" class="notice-date"></span></div><div id="detailContent" class="notice-detail-content"></div></div></div>
         <div id="videos" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">🎬 수업 영상</h2><div id="videosContentContainer"></div></div>
-        <div id="videoDetail" class="section"><button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('videos')">← 목록으로 돌아가기</button><div class="content-card" style="padding: 40px;"><div class="notice-detail-header"><div id="videoDetailBadge" class="board-badge" style="margin-bottom: 10px;"></div><h3 id="videoDetailTitle"></h3></div><div id="videoDetailMedia" style="margin-bottom: 20px;"></div><div id="videoDetailDesc" class="notice-detail-content"></div></div></div>
+        <div id="videoDetail" class="section"><button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="window.history.back()">← 목록으로 돌아가기</button><div class="content-card" style="padding: 40px;"><div class="notice-detail-header"><div id="videoDetailBadge" class="board-badge" style="margin-bottom: 10px;"></div><h3 id="videoDetailTitle"></h3></div><div id="videoDetailMedia" style="margin-bottom: 20px;"></div><div id="videoDetailDesc" class="notice-detail-content"></div></div></div>
         <div id="materials" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">학습 자료</h2><div id="materialsContentContainer"></div></div>
         <div id="clinicBoard" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">🕒 클리닉 예약</h2><p style="color: var(--text-muted); margin-bottom: 20px;">원하는 날짜의 클리닉을 확인하고 선착순으로 예약하세요!</p><div id="clinicListContainer"></div></div>
         <div id="adminClinic" class="section"><h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">⚙️ 클리닉 일정 관리</h2><div class="auth-box" style="max-width: 500px; margin: 0 auto;"><h3 style="margin-top: 0; text-align: center;">새로운 클리닉 오픈</h3><p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">원하는 날짜와 시간, 예약 정원을 설정해주세요.</p><input type="date" id="clinicDate"><input type="text" id="clinicTime" placeholder="시간 (예: 20:00 ~ 22:00)"><input type="number" id="clinicMax" placeholder="예약 정원 (예: 10명)"><button class="btn" onclick="createClinic()" id="clinicSubmitBtn">일정 열기</button></div></div>
@@ -187,45 +187,38 @@
             try { await setDoc(doc(db, "clinics", date), { date, time, max_capacity: max, current_count: 0, booked_users: [] }); alert("오픈 완료!"); } catch (e) { alert("생성 실패"); }
         };
         window.renderClinics = async function() {
-    const container = document.getElementById('clinicListContainer'); container.innerHTML = '불러오는 중...';
-    const snapshot = await getDocs(collection(db, "clinics"));
-    let html = '';
-    snapshot.forEach((doc) => {
-        const d = doc.data();
-        // 💡 이름 대신 UID로 비교하여 본인 예약인지 정확히 확인
-        const isBooked = d.booked_users.includes(currentUser.uid); 
-        const isFull = d.current_count >= d.max_capacity;
-        
-        html += `<div class="content-card clinic-item">
-            <div><h3>📅 ${d.date} 클리닉</h3>
-            <p>⏰ ${d.time}<br>👥 ${d.current_count}/${d.max_capacity}명</p></div>
-            <div><button class="btn" ${isBooked || isFull ? 'disabled' : ''} onclick="bookClinic('${doc.id}')">
-            ${isBooked ? '예약완료 ✅' : (isFull ? '마감' : '예약하기')}
-            </button></div></div>`;
-    });
-    container.innerHTML = html || '일정이 없습니다.';
-};
-        window.bookClinic = async function(clinicId) {
-    try {
-        await runTransaction(db, async (t) => {
-            const ref = doc(db, "clinics", clinicId);
-            const docData = await t.get(ref);
-            const d = docData.data();
-            
-            // 💡 이름 대신 UID로 중복 예약 체크
-            if (d.booked_users.includes(currentUser.uid)) throw "이미 예약하셨습니다!";
-            if (d.current_count >= d.max_capacity) throw "아쉽지만 마감되었습니다.";
-            
-            // 💡 데이터베이스에 UID 저장
-            t.update(ref, { 
-                current_count: d.current_count + 1, 
-                booked_users: [...d.booked_users, currentUser.uid] 
+            const container = document.getElementById('clinicListContainer'); container.innerHTML = '불러오는 중...';
+            const snapshot = await getDocs(collection(db, "clinics"));
+            let html = '';
+            snapshot.forEach((doc) => {
+                const d = doc.data();
+                const isBooked = d.booked_users.includes(auth.currentUser.uid);
+                const isFull = d.current_count >= d.max_capacity;
+                html += `<div class="content-card clinic-item">
+                            <div><h3>📅 ${d.date} 클리닉</h3>
+                            <p>⏰ ${d.time}<br>👥 ${d.current_count}/${d.max_capacity}명</p></div>
+                            <div><button class="btn" ${isBooked || isFull ? 'disabled' : ''} onclick="bookClinic('${doc.id}')">
+                            ${isBooked ? '예약완료 ✅' : (isFull ? '마감' : '예약하기')}
+                            </button></div></div>`;
             });
-        });
-        alert("예약 성공!"); 
-        window.renderClinics();
-    } catch (e) { alert(e); }
-};
+            container.innerHTML = html || '일정이 없습니다.';
+        };
+        window.bookClinic = async function(clinicId) {
+            if (!auth.currentUser) return alert("로그인이 필요합니다.");
+            const myUid = auth.currentUser.uid;
+            try {
+                await runTransaction(db, async (t) => {
+                    const ref = doc(db, "clinics", clinicId);
+                    const docData = await t.get(ref);
+                    const d = docData.data();
+                    const currentBookedUsers = d.booked_users || [];
+                    if (currentBookedUsers.includes(myUid)) throw "이미 예약하셨습니다!";
+                    if (d.current_count >= d.max_capacity) throw "마감되었습니다.";
+                    t.update(ref, { current_count: d.current_count + 1, booked_users: [...currentBookedUsers, myUid] });
+                });
+                alert("예약 성공!"); window.renderClinics();
+            } catch (e) { alert(e); console.error("예약 오류:", e); }
+        };
         window.renderNotices = function() {
             document.getElementById('publicNoticeList').innerHTML = notices.map((n, i) => `<div class="notice-list-item" onclick="viewNotice(${i})"><strong>${n.title}</strong><span class="notice-date">${n.date}</span></div>`).join('');
         };
@@ -242,7 +235,9 @@
                         board.videos.forEach((v, i) => html += `<tr onclick="window.viewVideo('${code}', ${i})"><td>${i+1}</td><td><span class="video-title">${v.title}</span></td><td>${v.desc}</td></tr>`);
                         html += `</tbody></table></div>`;
                     } else if (type === 'materials' && typeof classFiles !== 'undefined' && classFiles[code]) {
-                        classFiles[code].forEach(f => html += `<div class="content-card"><h3>📄 ${f}</h3><a href="./assets/${code}/${f}" download class="btn btn-outline" style="display:block; text-align:center; padding:12px;">다운로드 ⬇</a></div>`);
+                        html += `<div class="content-card" style="padding: 10px 20px;"><table class="video-board"><thead><tr><th width="10%">번호</th><th width="60%">자료 제목</th><th width="30%">설명</th></tr></thead><tbody>`;
+                        classFiles[code].forEach((f, i) => html += `<tr onclick="window.viewMaterial('${code}', '${f}')"><td>${i+1}</td><td><span class="video-title">📄 ${f}</span></td><td>수업 자료</td></tr>`);
+                        html += `</tbody></table></div>`;
                     }
                     container.innerHTML += html + '</div>';
                 }
@@ -254,6 +249,13 @@
             document.getElementById('videoDetailTitle').innerText = v.title;
             document.getElementById('videoDetailDesc').innerText = v.desc;
             document.getElementById('videoDetailMedia').innerHTML = `<div style="position:relative; padding-bottom:56.25%; height:0; background:#000;"><iframe style="position:absolute; width:100%; height:100%;" src="https://www.youtube.com/embed/${getYouTubeVideoId(v.link)}" frameborder="0" allowfullscreen></iframe></div>`;
+            window.showSection('videoDetail');
+        };
+        window.viewMaterial = function(code, fileName) {
+            document.getElementById('videoDetailBadge').innerText = '학습 자료';
+            document.getElementById('videoDetailTitle').innerText = fileName;
+            document.getElementById('videoDetailDesc').innerText = "해당 파일을 다운로드하여 학습하세요.";
+            document.getElementById('videoDetailMedia').innerHTML = `<a href="./assets/${code}/${fileName}" download class="btn" style="display:block; text-align:center; padding:20px; text-decoration:none;">다운로드 ⬇</a>`;
             window.showSection('videoDetail');
         };
         function getYouTubeVideoId(url) { const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); return (match && match[2].length === 11) ? match[2] : null; }
