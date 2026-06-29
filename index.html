@@ -32,7 +32,20 @@
         .content-card h3 { margin-top: 0; font-size: 1.4rem; font-weight: 800; }
         .board-badge { display: inline-block; background: var(--primary); color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; margin-bottom: 15px; box-shadow: var(--btn-shadow); }
         .auth-box { max-width: 380px; margin: 40px auto; padding: 40px; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: var(--border-width) solid var(--border-color); display: flex; flex-direction: column; gap: 20px; }
-        input[type="text"], input[type="password"] { padding: 16px 20px; border: var(--border-width) solid var(--border-color); border-radius: var(--btn-radius); font-size: 1rem; background: var(--bg); color: var(--text-main); transition: 0.3s; font-family: inherit; }
+        
+        /* 💡 수정된 입력 폼 스타일 (date, number 추가 및 꽉 채우기) */
+        input[type="text"], input[type="password"], input[type="date"], input[type="number"] { 
+            padding: 16px 20px; 
+            border: var(--border-width) solid var(--border-color); 
+            border-radius: var(--btn-radius); 
+            font-size: 1rem; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            transition: 0.3s; 
+            font-family: inherit; 
+            box-sizing: border-box; 
+            width: 100%;
+        }
         input:focus { outline: none; border-color: var(--primary); }
         .btn { padding: 16px; background: var(--primary); color: #ffffff; border: var(--border-width) solid var(--border-color); border-radius: var(--btn-radius); font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: var(--btn-shadow); transition: 0.2s; font-family: inherit; }
         .btn:hover { transform: translateY(-2px); background: var(--primary-hover); }
@@ -47,7 +60,6 @@
         .notice-detail-header h3 { font-size: 1.8rem; margin: 0 0 10px 0; color: var(--primary); }
         .notice-detail-content { line-height: 1.8; font-size: 1.05rem; color: var(--text-muted); min-height: 150px; }
         
-        /* 💡 추가된 비디오 게시판 리스트 스타일 */
         .video-board { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .video-board th, .video-board td { border-bottom: var(--border-width) solid var(--border-color); padding: 16px 10px; text-align: center; }
         .video-board th { background-color: var(--border-color); font-weight: 800; color: var(--text-main); }
@@ -70,15 +82,13 @@
             .content-card { padding: 24px; }
             .content-card h3 { font-size: 1.2rem; }
             .auth-box { padding: 24px; margin: 20px auto; gap: 16px; }
-            input[type="text"], input[type="password"] { padding: 12px 16px; font-size: 0.95rem; }
+            input[type="text"], input[type="password"], input[type="date"], input[type="number"] { padding: 12px 16px; font-size: 0.95rem; }
             .btn { padding: 14px; font-size: 1rem; }
             .notice-list-item { padding: 16px; flex-direction: column; align-items: flex-start; gap: 8px; }
             .notice-list-item strong { font-size: 1rem; }
             .notice-date { font-size: 0.8rem; padding: 4px 8px; }
             .notice-detail-header h3 { font-size: 1.4rem; }
             .notice-detail-content { font-size: 0.95rem; }
-            
-            /* 💡 모바일용 비디오 리스트 스타일 (설명 열 숨기기) */
             .video-board th:nth-child(3), .video-board td:nth-child(3) { display: none; }
             .video-board td { padding: 12px 5px; font-size: 0.95rem; }
         }
@@ -99,6 +109,7 @@
             <button onclick="navigate('noticeBoard', true)">공지사항</button>
             <button onclick="navigate('videos', true)">수업 영상</button>
             <button onclick="navigate('materials', true)">학습 자료</button>
+            <button onclick="navigate('adminClinic', true)">⚙️ 클리닉 관리</button>
             <button onclick="navigate('login')" id="loginNavBtn">로그인</button>
         </nav>
     </header>
@@ -126,13 +137,11 @@
             </div>
         </div>
 
-        <!-- 💡 수업 영상 게시판 (목록) -->
         <div id="videos" class="section">
             <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">🎬 수업 영상</h2>
             <div id="videosContentContainer"></div>
         </div>
         
-        <!-- 💡 수업 영상 상세 페이지 (클릭 시 보이는 곳) -->
         <div id="videoDetail" class="section">
             <button class="btn btn-outline" style="margin-bottom: 20px; padding: 10px 20px;" onclick="showSection('videos')">← 목록으로 돌아가기</button>
             <div class="content-card" style="padding: 40px;">
@@ -148,6 +157,20 @@
         <div id="materials" class="section">
             <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">학습 자료</h2>
             <div id="materialsContentContainer"></div>
+        </div>
+
+        <div id="adminClinic" class="section">
+            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 30px;">⚙️ 클리닉 일정 관리</h2>
+            <div class="auth-box" style="max-width: 500px; margin: 0 auto;">
+                <h3 style="margin-top: 0; text-align: center;">새로운 클리닉 오픈</h3>
+                <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                    원하는 날짜와 시간, 예약 정원을 설정해주세요.
+                </p>
+                <input type="date" id="clinicDate" title="클리닉 날짜 선택">
+                <input type="text" id="clinicTime" placeholder="시간 (예: 20:00 ~ 22:00)">
+                <input type="number" id="clinicMax" placeholder="예약 정원 (예: 10명)">
+                <button class="btn" onclick="createClinic()" id="clinicSubmitBtn">일정 열기</button>
+            </div>
         </div>
 
         <div id="login" class="section">
@@ -185,13 +208,13 @@
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
          const firebaseConfig = {
-        apiKey: "AIzaSyAf7Oez1X8lja7uTIsGs_PRda4aMjWYcqA",
-        authDomain: "kimmhb.firebaseapp.com",
+            apiKey: "AIzaSyAf7Oez1X8lja7uTIsGs_PRda4aMjWYcqA",
+            authDomain: "kimmhb.firebaseapp.com",
             projectId: "kimmhb",
-        storageBucket: "kimmhb.firebasestorage.app",
+            storageBucket: "kimmhb.firebasestorage.app",
             messagingSenderId: "760747546538",
             appId: "1:760747546538:web:266db9e9daab37a8467dd3"
-    };
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -208,284 +231,3 @@
             'class101': { boardName: '공통수학2 심화', videos: [{ title: '[TEST]', link: 'https://www.youtube.com/watch?v=MYGj54xrdoY', desc: '심화 문제 풀이' }] },
             'class102': { boardName: '대수 심화', videos: [{ title: '지수/로그함수 고난도', link: 'https://youtube.com', desc: '심화 특강' }] }
         };
-
-        let isLoggedIn = false;
-        let currentUser = null; 
-        let pendingTarget = null;
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const docRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(docRef);
-                
-                if (docSnap.exists()) {
-                    currentUser = docSnap.data();
-                    isLoggedIn = true;
-                    
-                    const btn = document.getElementById('loginNavBtn');
-                    btn.innerText = "로그아웃";
-                    btn.onclick = () => window.performLogout();
-                }
-            } else {
-                isLoggedIn = false;
-                currentUser = null;
-                const btn = document.getElementById('loginNavBtn');
-                btn.innerText = "로그인";
-                btn.onclick = () => window.navigate('login');
-            }
-        });
-
-        window.onload = function() {
-            const savedTheme = localStorage.getItem('theme') || 'default';
-            window.setTheme(savedTheme);
-            window.renderNotices();
-        };
-
-        window.setTheme = function(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-        };
-
-        window.navigate = function(targetId, requiresAuth = false) {
-            if (requiresAuth && !isLoggedIn) {
-                alert("🔒 회원가입 및 로그인 후 이용 가능한 서비스입니다.");
-                pendingTarget = targetId;
-                window.showSection('login');
-                return;
-            }
-            window.showSection(targetId);
-        };
-
-        window.showSection = function(targetId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(targetId).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // 영상을 닫을 때 iframe 멈추기 위한 처리
-            if(targetId !== 'videoDetail') {
-                document.getElementById('videoDetailMedia').innerHTML = ''; 
-            }
-
-            if (targetId === 'videos') window.renderDynamicCourses('videos');
-            if (targetId === 'materials') window.renderDynamicCourses('materials');
-        };
-
-        window.performSignup = async function() {
-            const name = document.getElementById('signupName').value.trim();
-            const code = document.getElementById('signupCode').value.trim();
-            const id = document.getElementById('signupId').value.trim();
-            const pw = document.getElementById('signupPw').value.trim();
-
-            if (!name || !code || !id || !pw) return alert("모든 빈칸을 채워주세요!");
-            if (!validCodes.includes(code)) return alert("❌ 유효하지 않은 입장 코드입니다.");
-            if (pw.length < 6) return alert("비밀번호는 최소 6자리 이상이어야 합니다.");
-
-            const dummyEmail = `${id}@kimmath.com`;
-            const btn = document.getElementById('signupSubmitBtn');
-            btn.innerText = "가입 처리 중...";
-            btn.disabled = true;
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, dummyEmail, pw);
-                const user = userCredential.user;
-
-                await setDoc(doc(db, "users", user.uid), {
-                    userId: id,
-                    name: name,
-                    code: code,
-                    createdAt: new Date().toISOString()
-                });
-
-                alert("회원가입이 완료되었습니다. 🥳");
-                
-                document.getElementById('signupName').value = '';
-                document.getElementById('signupCode').value = '';
-                document.getElementById('signupId').value = '';
-                document.getElementById('signupPw').value = '';
-
-                window.showSection('login');
-            } catch (error) {
-                if (error.code === 'auth/email-already-in-use') {
-                    alert("이미 존재하는 아이디입니다.");
-                } else {
-                    alert("회원가입 오류: " + error.message);
-                }
-            } finally {
-                btn.innerText = "계정 만들기";
-                btn.disabled = false;
-            }
-        };
-
-        window.performLogin = async function() {
-            const id = document.getElementById('loginId').value.trim();
-            const pw = document.getElementById('loginPw').value.trim();
-
-            if (!id || !pw) return alert("아이디와 비밀번호를 입력해주세요.");
-
-            const dummyEmail = `${id}@kimmath.com`;
-            const btn = document.getElementById('loginSubmitBtn');
-            btn.innerText = "로그인 중...";
-            btn.disabled = true;
-
-            try {
-                await signInWithEmailAndPassword(auth, dummyEmail, pw);
-                alert("로그인 성공! 응원합니다!");
-                
-                window.showSection(pendingTarget || 'home');
-                pendingTarget = null;
-                
-                document.getElementById('loginId').value = '';
-                document.getElementById('loginPw').value = '';
-            } catch (error) {
-                alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-            } finally {
-                btn.innerText = "로그인";
-                btn.disabled = false;
-            }
-        };
-
-        window.performLogout = async function() {
-            try {
-                await signOut(auth);
-                alert("로그아웃 되었습니다.");
-                window.showSection('home');
-            } catch (error) {
-                console.error("로그아웃 오류", error);
-            }
-        };
-
-        window.viewNotice = function(index) {
-            const notice = notices[index];
-            document.getElementById('detailTitle').innerText = notice.title;
-            document.getElementById('detailDate').innerText = notice.date;
-            document.getElementById('detailContent').innerHTML = notice.content;
-            window.showSection('noticeDetail');
-        };
-
-        window.renderNotices = function() {
-            const html = notices.map((n, i) => `
-                <div class="notice-list-item" onclick="viewNotice(${i})">
-                    <strong>${n.title}</strong>
-                    <span class="notice-date">${n.date}</span>
-                </div>
-            `).join('');
-            document.getElementById('publicNoticeList').innerHTML = html;
-        };
-
-        function getYouTubeVideoId(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
-
-        // 💡 비디오 클릭 시 작동하는 상세 보기 함수
-        window.viewVideo = function(code, index) {
-            const board = courseData[code];
-            const video = board.videos[index];
-            
-            document.getElementById('videoDetailBadge').innerText = board.boardName;
-            document.getElementById('videoDetailTitle').innerText = video.title;
-            document.getElementById('videoDetailDesc').innerText = video.desc;
-            
-            const ytId = getYouTubeVideoId(video.link);
-            let mediaHTML = '';
-            
-            if (ytId) {
-                mediaHTML = `
-                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); background: #000;">
-                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen></iframe>
-                    </div>`;
-            } else {
-                mediaHTML = `<button class="btn btn-outline" style="width: 100%; padding: 12px;" onclick="window.open('${video.link}', '_blank')">외부 링크로 영상 보기 ▶</button>`;
-            }
-            
-            document.getElementById('videoDetailMedia').innerHTML = mediaHTML;
-            window.showSection('videoDetail');
-        };
-
-        window.renderDynamicCourses = function(type) {
-            const container = document.getElementById(type + 'ContentContainer');
-            container.innerHTML = ''; 
-            let html = '';
-
-            if (!currentUser) return;
-
-            Object.keys(courseData).forEach(code => {
-                if (currentUser.code === code) {
-                    const board = courseData[code];
-                    let items = [];
-
-                    if (type === 'videos') {
-                        items = board.videos || [];
-                    } else if (type === 'materials') {
-                        if (typeof classFiles !== 'undefined' && classFiles[code]) {
-                            items = classFiles[code].map(file => ({
-                                title: `📄 ${file}`,
-                                fileName: `./assets/${code}/${file}`,
-                                desc: '업데이트된 수업 자료입니다.'
-                            }));
-                        }
-                    }
-                    
-                    if (items.length > 0) {
-                        html += `<div style="margin-bottom: 40px;">`;
-                        html += `<div class="board-badge">${board.boardName} 전용 게시판</div>`;
-                        
-                        if (type === 'videos') {
-                            // 💡 비디오 게시판: 테이블(리스트) 형태로 출력
-                            html += `
-                            <div class="content-card" style="padding: 10px 20px;">
-                                <table class="video-board">
-                                    <thead>
-                                        <tr>
-                                            <th width="10%">번호</th>
-                                            <th width="60%">강의 제목</th>
-                                            <th width="30%">설명</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                            `;
-                            items.forEach((item, index) => {
-                                // 리스트 클릭 시 viewVideo 함수 호출
-                                html += `
-                                        <tr onclick="window.viewVideo('${code}', ${index})">
-                                            <td>${index + 1}</td>
-                                            <td><span class="video-title">${item.title}</span></td>
-                                            <td><span style="font-size: 0.85rem; color: var(--text-muted);">${item.desc}</span></td>
-                                        </tr>
-                                `;
-                            });
-                            html += `
-                                    </tbody>
-                                </table>
-                            </div>
-                            `;
-                        } else {
-                            // 학습 자료는 기존 카드 형태로 유지
-                            items.forEach(item => {
-                                let mediaHTML = `<div style="width: 100%; height: 80px; background: var(--bg); border-radius: var(--btn-radius); border: var(--border-width) solid var(--border-color); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">📁</div>`;
-                                let actionHTML = `<a href="${item.fileName}" download class="btn btn-outline" style="display: block; text-align: center; text-decoration: none; width: 100%; box-sizing: border-box; padding: 12px; margin-top: 10px;">다운로드 ⬇</a>`;
-
-                                html += `
-                                    <div class="content-card" style="margin-top: 10px;">
-                                        ${mediaHTML}
-                                        <h3>${item.title}</h3>
-                                        <p>${item.desc}</p>
-                                        ${actionHTML}
-                                    </div>
-                                `;
-                            });
-                        }
-                        html += `</div>`;
-                    }
-                }
-            });
-
-            if (html === '') {
-                html = '<p style="text-align: center; color: var(--text-muted);">게시판이 비어있습니다.</p>';
-            }
-            container.innerHTML = html;
-        };
-    </script>
-</body>
-</html>
