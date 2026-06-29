@@ -2,13 +2,14 @@ name: Update File List
 on:
   push:
     paths:
-      - 'assets/**'  # assets 폴더 내에 파일이 변경될 때만 실행
+      - 'assets/**'
+  workflow_dispatch: 
 
 jobs:
   update-list:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # 커밋을 위해 권한이 꼭 필요함!
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -22,6 +23,5 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add file_list.js
-          # 변경사항이 있을 때만 커밋
           git commit -m "Auto-update file_list.js" || echo "No changes to commit"
           git push
