@@ -187,30 +187,45 @@
             try { await setDoc(doc(db, "clinics", date), { date, time, max_capacity: max, current_count: 0, booked_users: [] }); alert("오픈 완료!"); } catch (e) { alert("생성 실패"); }
         };
         window.renderClinics = async function() {
-            const container = document.getElementById('clinicListContainer'); container.innerHTML = '불러오는 중...';
-            const snapshot = await getDocs(collection(db, "clinics"));
-            let html = '';
-            snapshot.forEach((doc) => {
-                const d = doc.data();
-                const isBooked = d.booked_users.includes(currentUser.name);
-                const isFull = d.current_count >= d.max_capacity;
-                html += `<div class="content-card clinic-item"><div><h3>📅 ${d.date} 클리닉</h3><p>⏰ ${d.time}<br>👥 ${d.current_count}/${d.max_capacity}명</p></div><div><button class="btn" ${isBooked || isFull ? 'disabled' : ''} onclick="bookClinic('${doc.id}')">${isBooked ? '예약완료 ✅' : (isFull ? '마감' : '예약하기')}</button></div></div>`;
-            });
-            container.innerHTML = html || '일정이 없습니다.';
-        };
+    const container = document.getElementById('clinicListContainer'); container.innerHTML = '불러오는 중...';
+    const snapshot = await getDocs(collection(db, "clinics"));
+    let html = '';
+    snapshot.forEach((doc) => {
+        const d = doc.data();
+        // 💡 이름 대신 UID로 비교하여 본인 예약인지 정확히 확인
+        const isBooked = d.booked_users.includes(currentUser.uid); 
+        const isFull = d.current_count >= d.max_capacity;
+        
+        html += `<div class="content-card clinic-item">
+            <div><h3>📅 ${d.date} 클리닉</h3>
+            <p>⏰ ${d.time}<br>👥 ${d.current_count}/${d.max_capacity}명</p></div>
+            <div><button class="btn" ${isBooked || isFull ? 'disabled' : ''} onclick="bookClinic('${doc.id}')">
+            ${isBooked ? '예약완료 ✅' : (isFull ? '마감' : '예약하기')}
+            </button></div></div>`;
+    });
+    container.innerHTML = html || '일정이 없습니다.';
+};
         window.bookClinic = async function(clinicId) {
-            try {
-                await runTransaction(db, async (t) => {
-                    const ref = doc(db, "clinics", clinicId);
-                    const docData = await t.get(ref);
-                    const d = docData.data();
-                    if (d.booked_users.includes(currentUser.name)) throw "이미 예약함!";
-                    if (d.current_count >= d.max_capacity) throw "마감됨!";
-                    t.update(ref, { current_count: d.current_count + 1, booked_users: [...d.booked_users, currentUser.name] });
-                });
-                alert("예약 성공!"); window.renderClinics();
-            } catch (e) { alert(e); }
-        };
+    try {
+        await runTransaction(db, async (t) => {
+            const ref = doc(db, "clinics", clinicId);
+            const docData = await t.get(ref);
+            const d = docData.data();
+            
+            // 💡 이름 대신 UID로 중복 예약 체크
+            if (d.booked_users.includes(currentUser.uid)) throw "이미 예약하셨습니다!";
+            if (d.current_count >= d.max_capacity) throw "아쉽지만 마감되었습니다.";
+            
+            // 💡 데이터베이스에 UID 저장
+            t.update(ref, { 
+                current_count: d.current_count + 1, 
+                booked_users: [...d.booked_users, currentUser.uid] 
+            });
+        });
+        alert("예약 성공!"); 
+        window.renderClinics();
+    } catch (e) { alert(e); }
+};
         window.renderNotices = function() {
             document.getElementById('publicNoticeList').innerHTML = notices.map((n, i) => `<div class="notice-list-item" onclick="viewNotice(${i})"><strong>${n.title}</strong><span class="notice-date">${n.date}</span></div>`).join('');
         };
