@@ -702,9 +702,13 @@ body:not([data-page="home"]) .push-banner{display:none}
 // ✎ Firebase 설정 (Firebase 콘솔 → 프로젝트 설정에서 복사한 값, 공개되어도 괜찮은 값입니다)
 const FIREBASE_CONFIG = { apiKey: "AIzaSyAf7Oez1X8lja7uTIsGs_PRda4aMjWYcqA", authDomain: "kimmhb.firebaseapp.com", projectId: "kimmhb", storageBucket: "kimmhb.firebasestorage.app", messagingSenderId: "760747546538", appId: "1:760747546538:web:266db9e9daab37a8467dd3" };
 
-// ✎ 관리자 아이디 (보안 규칙 파일의 admin@kimmath.com 과 같아야 합니다)
-const ADMIN_ID = 'admin';
+// 관리자 계정: 선생님 Gmail로 로그인합니다 (로그인 화면 아이디 칸에 Gmail 주소 전체를 입력).
+//   실제 관리자 판단은 보안 규칙(firestore.rules · storage.rules)에 적힌 이메일로 서버가 합니다.
+//   개인 이메일이 공개 페이지에 드러나지 않도록 여기에는 적지 않습니다.
+const ADMIN_ID = 'admin'; // 학생이 쓸 수 없는 예약 아이디
 const EMAIL_DOMAIN = '@kimmath.com';
+// 아이디 → 로그인 이메일. 학생·학부모는 '아이디@kimmath.com', '@'가 들어 있으면 그대로(관리자 Gmail)
+const toEmail = (id) => (id.includes('@') ? id : id + EMAIL_DOMAIN);
 const FUNCTIONS_REGION = 'asia-northeast3';
 
 // ✎ 폰 알림용 키 (Firebase 콘솔 → 프로젝트 설정 → 클라우드 메시징 → 웹 푸시 인증서 → 키 쌍)
@@ -738,7 +742,9 @@ const byDateDesc = (a, b) => String(b.date || '').localeCompare(String(a.date ||
 let fb = null, authUser = null, profile = null, pending = null, signingUp = false;
 let readyResolve; const ready = new Promise((r) => (readyResolve = r));
 let routeToken = 0;
-const isAdmin = () => !!authUser && (authUser.email || '').toLowerCase() === ADMIN_ID + EMAIL_DOMAIN;
+// 학생·학부모 계정은 모두 '@kimmath.com'이므로, 그 밖의 이메일로 로그인한 사람이 관리자입니다.
+// (화면 표시용 판단일 뿐이고, 데이터 권한은 보안 규칙이 관리자 Gmail로 따로 확인합니다)
+const isAdmin = () => !!authUser && !!authUser.email && !authUser.email.toLowerCase().endsWith(EMAIL_DOMAIN);
 const isIn = () => !!authUser && (isAdmin() || !!profile);
 const isParent = () => !isAdmin() && profile?.role === 'parent';
 const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
@@ -1319,12 +1325,12 @@ const fmtScore = (n) => (n == null || n === '' ? '–' : Number.isInteger(+n) ? 
 async function renderMe(_, live) {
   await getClasses();
   const rows = isAdmin()
-    ? `<div><dt>아이디</dt><dd>${esc(ADMIN_ID)}</dd></div><div><dt>권한</dt><dd>관리자</dd></div>`
+    ? `<div><dt>아이디</dt><dd>${esc(authUser.email)}</dd></div><div><dt>권한</dt><dd>관리자</dd></div>`
     : isParent()
       ? `<div><dt>이름</dt><dd>${esc(profile.name)}</dd></div><div><dt>아이디</dt><dd>${esc(profile.userId)}</dd></div><div><dt>자녀</dt><dd>${esc(profile.childName)} 학생</dd></div>`
       : `<div><dt>이름</dt><dd>${esc(profile.name)}</dd></div><div><dt>아이디</dt><dd>${esc(profile.userId)}</dd></div><div><dt>반</dt><dd>${esc(className(profile.code))}</dd></div>`;
   $('#meInfo').innerHTML = `<dl class="cv">${rows}</dl><p class="note">이름이나 ${isParent() ? '연결된 자녀가' : '반이'} 틀렸다면 선생님께 말해 주세요.</p>`;
-  $('#pwUser').value = isAdmin() ? ADMIN_ID : profile.userId;
+  $('#pwUser').value = isAdmin() ? authUser.email : profile.userId;
   const more = $('#meMore');
   const parts = [pushCard(), installCard()];
   if (!isAdmin() && !isParent()) parts.unshift(`<section class="me-card" id="inviteCard"><h2 class="panel-title">학부모 연결</h2>${loading}</section>`);
@@ -1393,7 +1399,7 @@ async function doLogin(e) {
   if (!fb) return toast('서버에 연결하지 못했습니다.');
   const btn = e.target.querySelector('button'); btn.disabled = true;
   try {
-    const cred = await fb.A.signInWithEmailAndPassword(fb.auth, id + EMAIL_DOMAIN, pw);
+    const cred = await fb.A.signInWithEmailAndPassword(fb.auth, toEmail(id), pw);
     authUser = cred.user; profile = await loadProfile(cred.user.uid);
     if (!isIn()) { const net = profileError; await fb.A.signOut(fb.auth); authUser = null; updateHeader(); btn.disabled = false; return toast(net ? '정보를 불러오지 못했습니다. 인터넷 연결을 확인하고 다시 로그인해 주세요.' : '가입 정보를 찾을 수 없습니다. 선생님께 문의해 주세요.'); }
     updateHeader(); e.target.reset(); const to = pending || '#/'; pending = null; go(to);
